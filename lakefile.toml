@@ -1,0 +1,6 @@
+name = "aoc25"
+version = "0.1.0"
+
+[[lean_exe]]
+name = "Day1"
+root = "Day1"
