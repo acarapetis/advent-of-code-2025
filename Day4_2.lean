@@ -14,9 +14,7 @@ structure Grid where
   height: Nat
   width: Nat
   data: Matrix Bool height width
-
-instance: Inhabited <| Grid where
-  default := ⟨0, 0, #v[]⟩
+instance: Inhabited <| Grid where default := ⟨0, 0, #v[]⟩
 
 abbrev Grid.occupied (g: Grid) := g.data.sample
 def Grid.occupiedCount (g: Grid) := g.data.cells.countP g.occupied
@@ -61,15 +59,14 @@ theorem Matrix.ofFn2_sample (f: Fin h × Fin w → T) (p: Fin h × Fin w):
   unfold Matrix.ofFn2 Matrix.sample
   simp [Vector.ofFn, Vector.get]
 
-theorem removeAccessible_sample (g: Grid) (p: g.coord):
-    g.removeAccessible.occupied p = (g.occupied p && !g.accessible p) := by
-      unfold Grid.removeAccessible Grid.occupied Grid.accessible
-      grind only [Matrix.ofFn2_sample, usr List.length_filter_le, cases eager Prod, cases Or]
-
 theorem removeAccessibleNonIncreasing (g: Grid):
     g.removeAccessible.occupiedCount <= g.occupiedCount := by
-  have hImpl : ∀ (x : g.data.coord), x ∈ g.data.cells → g.removeAccessible.occupied x -> g.occupied x := by
-    grind only [removeAccessible_sample, cases eager Prod]
+  have (p: g.coord): g.removeAccessible.occupied p = (g.occupied p && !g.accessible p) := by
+      unfold Grid.removeAccessible Grid.occupied Grid.accessible
+      grind only [Matrix.ofFn2_sample, usr List.length_filter_le, cases eager Prod, cases Or]
+  have hImpl (x : g.data.coord): x ∈ g.data.cells → 
+    g.removeAccessible.occupied x -> g.occupied x := by
+      grind only [cases eager Prod]
   exact List.countP_mono_left hImpl
 
 def finalGrid (g: Grid): Grid :=
