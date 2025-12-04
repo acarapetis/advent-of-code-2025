@@ -57,6 +57,6 @@ def sumInvalidIdsInRange (range: String × String): Nat :=
 
 def main : IO Unit := do
   let contents <- IO.FS.readFile "input2.txt"
-  let ranges := contents.stripSuffix "\n" |>.splitOn "," |> List.map parseRange
-  let sums := ranges |>.map sumInvalidIdsInRange
+  let ranges := contents.stripSuffix "\n" |>.splitOn "," |>.map parseRange
+  let sums := ranges.map sumInvalidIdsInRange
   IO.println sums.sum
