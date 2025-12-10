@@ -1,7 +1,7 @@
 abbrev Point := Int × Int
 def parsePoint (s: String): Point :=
-    let ns := s.trim.splitOn "," |>.map (·.toInt!)
-    (ns[0]!, ns[1]!)
+  let ns := s.trim.splitOn "," |>.map (·.toInt!)
+  (ns[0]!, ns[1]!)
 
 def opairs: List T -> List (T × T)
 | [] => []
