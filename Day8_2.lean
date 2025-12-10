@@ -37,13 +37,14 @@ def main : IO Unit := do
     |> opairs
     |>.map (fun ((p1, i), (p2, j)) => (d2 p1 p2, (i, j)))
     |>.mergeSort (·.fst <= ·.fst)
+  let mut cc := positions.length
   for (_, (i, j)) in sortedPairs do
     let ci := mapping[i]!
     let cj := mapping[j]!
     dbg_trace s!"{i} ∈ {ci}, {j} ∈ {cj}"
     if ci != cj then
       mapping := mapping.map (fun _ c => if c == cj then ci else c)
-      let cc := mapping.values.eraseDups.length
+      cc := cc - 1
       dbg_trace s!"=> {ci}. {cc} cliques."
       if cc == 1 then
         IO.println <| positions[i.toNat]!.x * positions[j.toNat]!.x
